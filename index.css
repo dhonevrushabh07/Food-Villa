@@ -32,3 +32,15 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+.shimmer-card{
+    width: 200px;
+    height: 200px;
+    background-color: lightgrey;
+    margin: 20px;
+    border: 1px solid;
+}
+.menu {
+    display: flex;
+    margin: 10px;
+}
