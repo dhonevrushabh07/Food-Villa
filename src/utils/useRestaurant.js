@@ -6,10 +6,8 @@ const useRestaurant = (resId) => {
         getRestaurant()
     }, [])
     async function getRestaurant() {
-        console.log(RESTAURANT_MENU + resId)
         const data = await fetch(RESTAURANT_MENU + resId)
         const restaurantData = await data.json()
-        console.log(restaurantData)
         setRestaurant(restaurantData)
     }
     return restaurant

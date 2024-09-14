@@ -7,10 +7,10 @@ import useRestaurantList from "../utils/useRestaurantList";
 import useOnline from "../utils/useOnline";
 
 function filterdata(searchText, restaurants) {
-    console.log(restaurants)
+    // console.log(restaurants)
     const data = restaurants.filter((restaurant) => restaurant.info.name.toLowerCase().includes(searchText.toLowerCase()))
 
-    console.log(data)
+    // console.log(data)
     return data
 }
 const Body = () => {
@@ -19,21 +19,22 @@ const Body = () => {
     const isOnline = useOnline()
 
     // Custom Hook created for below code
-    const [filteredRestaurants, allRestaurent] = useRestaurantList()
-    // const [filteredRestaurants, setFilteredRestaurants] = useState([])
-    // const [allRestaurent, setAllRestaurent] = useState([])
-    // useEffect(() => {
-    //     getRestaurants()
-    // }, [])
+    // const [filteredRestaurants, allRestaurent] = useRestaurantList()
+    // console.log("filteredRestaurants", filteredRestaurants)
+    const [filteredRestaurants, setFilteredRestaurants] = useState([])
+    const [allRestaurent, setAllRestaurent] = useState([])
+    useEffect(() => {
+        getRestaurants()
+    }, [])
 
-    // async function getRestaurants() {
-    //     const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.61610&lng=73.72860&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING")
-    //     // data is readable stream convert this readable stream into json
-    //     const jsonData = await data.json();
-    //     // console.log(jsonData?.data?.cards[4].card.card)
-    //     setAllRestaurent(jsonData.data.cards[4].card.card.gridElements.infoWithStyle.restaurants)
-    //     setFilteredRestaurants(jsonData.data.cards[4].card.card.gridElements.infoWithStyle.restaurants)
-    // }
+    async function getRestaurants() {
+        const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.61610&lng=73.72860&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING")
+        // data is readable stream convert this readable stream into json
+        const jsonData = await data.json();
+        // console.log(jsonData?.data?.cards[4].card.card)
+        setAllRestaurent(jsonData.data.cards[4].card.card.gridElements.infoWithStyle.restaurants)
+        setFilteredRestaurants(jsonData.data.cards[4].card.card.gridElements.infoWithStyle.restaurants)
+    }
 
     //Custom hook to check is user online or not
 
@@ -42,18 +43,18 @@ const Body = () => {
     }
     return (allRestaurent.length === 0) ? <Shimmer /> : (
         <>
-            <div className="search-container">
-                <input type="text" className="search-input" placeholder="Search" value={searchText} onChange={(e) => {
+            <div className="search-container p-5 bg-purple-50 my-2">
+                <input type="text" className="search-input " placeholder="Search" value={searchText} onChange={(e) => {
                     setSearchText(e.target.value)
                 }} />
-                <button className="search-btn" onClick={() => {
+                <button className="search-btn p-1 m-2 bg-purple-200 rounded-md" onClick={() => {
                     const data = filterdata(searchText, allRestaurent)
-                    console.log(data)
+                    // console.log(data)
                     setFilteredRestaurants(data)
                 }}>Search</button>
             </div>
 
-            <div className="restarant-list">
+            <div className="restarant-list flex flex-wrap" >
                 {
                     filteredRestaurants.length === 0 ? <h1>No Restaurent found</h1> : filteredRestaurants.map((res) => {
                         return (
